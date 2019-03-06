@@ -1,0 +1,5 @@
+- name: "Create a backup of OCP components"
+  hosts: all
+  serial: 1
+  roles:
+    - ocp-backup

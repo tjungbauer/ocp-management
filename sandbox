@@ -1,0 +1,15 @@
+# this backups etcd and master nodes
+[masters]
+
+# it might be desired to backup the projects on one master only
+# in that case remove some nodes
+[backproject]
+
+# nodes which shall be get a backup
+[nodes]
+
+#############################
+# used FOR OS UPGRADE
+#############################
+[upgrade_group]
+host1 ansible_host=host1.fqdn

@@ -1,0 +1,32 @@
+---
+# Backup all projects, the project_export.sh is used of the official openshift repo
+
+# be sure JQ is installed
+- name: "install required package JQ (json processor)"
+  yum:
+    name: jq
+    state: latest
+
+# export all projects
+- name: "Run OpenShift Project Export script"
+  shell: '{{script_dest_path }}/prep_project_export.sh {{ today_dest_path }}/projects'
+
+# create an archive
+- name: "Create archive for OpenShift Project"
+  archive:
+    path: '{{ today_dest_path }}/projects'
+    dest: '{{ today_dest_path }}/openshift-projects-full-{{ansible_date_time.date}}.tar'
+    format: tar
+
+# check if the zip archive has been created
+- name: "Check if {{ today_dest_path }}/openshift-projects-full-{{ansible_date_time.date}}.tar"
+  stat:
+    path: "{{ today_dest_path }}/openshift-projects-full-{{ansible_date_time.date}}.tar"
+  register: proj_archive_ok
+
+# remove unzipped folder if archive has been created
+- name: "Remove unzipped folder {{ today_dest_path }}/projects"
+  file:
+    state: absent
+    path: "{{ today_dest_path }}/projects"
+  when: proj_archive_ok.stat.exists == true

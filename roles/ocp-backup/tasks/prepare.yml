@@ -1,0 +1,53 @@
+---
+# Prepare environment before starting backup
+# This is executed always
+
+# check if our target folder exists already and create it if it does not
+- name: "Check if target directory {{ backup_dest_path }} exists"
+  stat:
+    path: "{{ backup_dest_path }}"
+  register: backup_path
+
+- name: "Create Backup Path {{ backup_dest_path }} if it does not exist"
+  file:
+    path: "{{ backup_dest_path }}"
+    state: directory
+  when: backup_path.stat.exists == false
+##
+
+# check if script directory exists and create it if it does not
+- name: "Check if script target directory exists"
+  stat:
+    path: "{{ script_dest_path }}"
+  register: script_path
+
+- name: "Create Script Path if it does not exist"
+  file:
+    path: "{{ script_dest_path }}"
+    state: directory
+  when: script_path.stat.exists == false
+##
+
+# copy the backup scripts, which are taken from the official openshift repo
+- name: Copy backup scripts
+  copy:
+    src: scripts/
+    dest: '{{ script_dest_path }}'
+    owner: root
+    group: root
+    mode: 0750
+
+# check if the target directory of the day exists and create it if it does not
+- debug: var=ansible_date_time
+
+- name: "Check if todays target directory exists"
+  stat:
+    path: "{{ today_dest_path }}"
+  register: today_path
+
+- name: "Create folder for current day if it does not exist"
+  file:
+    path: "{{ today_dest_path }}"
+    state: directory
+  when: today_path.stat.exists == false
+##

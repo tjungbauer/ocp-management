@@ -1,0 +1,10 @@
+- name: "update all yum packages on all nodes defined in the provided hostgroup"
+  hosts: "{{ host }}"
+  serial: 1
+  vars_prompt:
+    name: "host"
+    prompt: "Please enter the host yor want to update."
+    default: ''
+    private: no
+  roles:
+    - ocp-ansible-yum

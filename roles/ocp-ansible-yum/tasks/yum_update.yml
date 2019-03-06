@@ -1,0 +1,11 @@
+---
+- name: update packages on rhel  server systems
+  become: true
+  become_user: root
+  become_method: sudo
+  yum:
+    name: "*"
+    state: latest
+    exclude: icinga2*
+  register: yumresult
+

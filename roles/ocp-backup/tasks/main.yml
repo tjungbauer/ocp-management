@@ -1,0 +1,25 @@
+---
+# tasks for ocp-backup
+# starting point 
+
+- import_tasks: createMounts.yml
+  tags: always
+  when: nfs == True
+
+- import_tasks: prepare.yml
+  tags: always
+
+- import_tasks: etcd.yml
+  run_once: true
+  when: "ansible_nodename in groups.masters"
+  tags: etcd
+
+- import_tasks: projects.yml
+  run_once: true
+  when: "ansible_nodename in groups.backproject"
+  tags: projects
+
+- import_tasks: node.yml
+  run_once: true
+  when: "ansible_nodename in groups.masters or ansible_nodename in groups.nodes"
+  tags: node

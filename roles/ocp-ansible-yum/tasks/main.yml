@@ -1,0 +1,17 @@
+---
+# tasks file for ocp-ansible-yum
+- include_tasks: ocp_unschedulable.yml
+  tags: unschedulable
+
+- include_tasks: ocp_evacuate.yml
+  tags: evacuate
+
+- include_tasks: yum_update.yml
+  tags: yum
+
+- include_tasks: systemd.yml
+  tags: restart
+
+- include_tasks: ocp_schedulable.yml
+  tags: schedulable
+

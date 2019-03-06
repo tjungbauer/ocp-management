@@ -1,0 +1,10 @@
+---
+# default files for ocp-backup
+backup_root: /backup
+backup_host: 'stofr4a-158.int.secrz.com:/export/FR4-T0-OpenShift-Test/backup'
+# if True, the playbook will try to to mount the mountpoint
+nfs: True
+
+backup_dest_path: '{{ backup_root }}/{{ inventory_hostname }}/'
+script_dest_path: '{{ backup_root }}/scripts'
+today_dest_path: '{{ backup_root }}/{{ inventory_hostname }}/{{ansible_date_time.date}}'

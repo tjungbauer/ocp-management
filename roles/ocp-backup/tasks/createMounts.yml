@@ -1,0 +1,21 @@
+---
+
+# check if backup_root exists already and create it if it does not
+- name: "Check if {{backup_root}} exists"
+  stat:
+    path: "{{ backup_root }}"
+  register: backup_root_path
+
+- name: "Create {{backup_root}} if it does not exist"
+  file:
+    path: "{{ backup_root }}"
+    state: directory
+  when: backup_root_path.stat.exists == false
+##
+
+- name: "Mount backup share (NFS)"
+  mount:
+    path: "{{ backup_root }}"
+    src: "{{ backup_host }}"
+    fstype: nfs
+    state: mounted

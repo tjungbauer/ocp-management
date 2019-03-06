@@ -1,0 +1,26 @@
+---
+# create a node backup by simply copying important files
+
+# create the backup, using a script of the openshift repo
+- name: "Run OpenShift Node Export script"
+  shell: '{{script_dest_path }}/backup_master_node.sh'
+
+# create an archive
+- name: "Create archive for OpenShift nodes"
+  archive:
+    path: '{{ today_dest_path }}/nodebackup-{{ansible_date_time.year}}{{ansible_date_time.month}}{{ansible_date_time.day}}'
+    dest: '{{ today_dest_path }}/nodebackup-{{ansible_date_time.date}}.gz'
+    format: gz
+
+# check if the zip archive has been created
+- name: "Check if {{ today_dest_path }}/nodebackup-{{ansible_date_time.date}}.gz has been created"
+  stat:
+    path: "{{ today_dest_path }}/nodebackup-{{ansible_date_time.date}}.gz"
+  register: node_archive_ok
+
+# remove unzipped folder if archive has been created
+- name: "Remove unzipped folder {{ today_dest_path }}/nodebackup-{{ansible_date_time.year}}{{ansible_date_time.month}}{{ansible_date_time.day}}"
+  file:
+    state: absent
+    path: "{{ today_dest_path }}/nodebackup-{{ansible_date_time.year}}{{ansible_date_time.month}}{{ansible_date_time.day}}"
+  when: node_archive_ok.stat.exists == true
