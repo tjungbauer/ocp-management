@@ -1,7 +1,6 @@
 ---
 # default files for ocp-backup
 backup_root: /backup
-backup_host: 'nfs-host:volume ... if applicable'
 # if True, the playbook will try to to mount the mountpoint
 nfs: True
 

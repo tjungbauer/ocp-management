@@ -57,9 +57,13 @@ ansible-playbook -i inventory playbooks/ocp-backup/config.yaml -t node -l master
 ansible-playbook -i inventory playbooks/ocp-backup/config.yml -t etcd
 ```
 
-### Backup Project 
+### Backup ALL Projects
 
 ```
-ansible-playbook -i inventory playbooks/ocp-backup/config.yaml -t projects
+ansible-playbook -i inventory playbooks/ocp-backup/config.yaml -t projects -l backproject
 ```
 
+## Backup Single Project
+```
+ansible-playbook -i inventory playbooks/ocp-backup/config.yaml -t projects -l backproject -e "project_name=PROJECTNAME"
+```

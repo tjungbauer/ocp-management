@@ -1,5 +1,5 @@
 - name: make actual node unschedulable
-  command: oc adm manage-node {{ ansible_fqdn }} --schedulable=false
+  command: oc adm manage-node {{ ansible_fqdn }} --schedulable=false --kubeconfig=/etc/origin/master/admin.kubeconfig
   delegate_to: "{{ groups.masters | first }}"
 
 

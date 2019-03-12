@@ -1,5 +1,5 @@
 - name:
-  command: oc adm manage-node {{ ansible_fqdn }} --evacuate --force
+  command: oc adm manage-node {{ ansible_fqdn }} --evacuate --force --kubeconfig=/etc/origin/master/admin.kubeconfig
   delegate_to: "{{ groups.masters | first }}"
 
 

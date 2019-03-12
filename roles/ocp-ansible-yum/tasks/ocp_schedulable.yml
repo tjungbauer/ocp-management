@@ -1,4 +1,4 @@
 - name: make actual node schedulable
-  command: oc adm manage-node {{ ansible_fqdn }} --schedulable=true
+  command: oc adm manage-node {{ ansible_fqdn }} --schedulable=true --kubeconfig=/etc/origin/master/admin.kubeconfig
   delegate_to: "{{ groups.masters | first }}"
 

@@ -11,7 +11,7 @@
 
 # Get pod of ETCD. Fail if nothing is returned
 - name: "Get ETCD POD"
-  shell: oc get pods -n kube-system |  grep -o '\S*etcd\S*' | grep `hostname`
+  shell: oc get pods -n kube-system --kubeconfig=/etc/origin/master/admin.kubeconfig |  grep -o '\S*etcd\S*' | grep `hostname`
   register: etcd_pod
   failed_when: etcd_pod.stdout|length <= 0
 
@@ -21,7 +21,7 @@
 # create backup by logging into the ECTD pod and run etcctl command
 # this will create the backup to /var/lib/etcd... the backupfile will be extended by the current unixtime
 - name: "Create ETCD Backup"
-  shell: oc exec {{ etcd_pod.stdout }} -n kube-system -c etcd -- /bin/bash -c "ETCDCTL_API=3 etcdctl --cert /etc/etcd/peer.crt --key /etc/etcd/peer.key --cacert /etc/etcd/ca.crt --endpoints {{ endpoint_ip.stdout }} snapshot save etcd-snapshot-{{ansible_date_time.epoch}}.db"
+  shell: oc exec {{ etcd_pod.stdout }} -n kube-system -c etcd --kubeconfig=/etc/origin/master/admin.kubeconfig -- /bin/bash -c "ETCDCTL_API=3 etcdctl --cert /etc/etcd/peer.crt --key /etc/etcd/peer.key --cacert /etc/etcd/ca.crt --endpoints {{ endpoint_ip.stdout }} snapshot save etcd-snapshot-{{ansible_date_time.epoch}}.db"
 
 # copy the backup file to a share.
 # store as 400
