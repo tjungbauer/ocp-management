@@ -39,11 +39,16 @@ ocpfiles(){
 otherfiles(){
   mkdir -p ${BACKUPLOCATION}/etc/sysconfig
   mkdir -p ${BACKUPLOCATION}/etc/pki
+  mkdir -p ${BACKUPLOCATION}/etc/etcd
   echo "Exporting other important files to ${BACKUPLOCATION}"
   if [ -f /etc/sysconfig/flanneld ]
   then
     cp -a /etc/sysconfig/flanneld \
       ${BACKUPLOCATION}/etc/sysconfig/
+  fi
+  if [ -d /etc/etcd ]
+  then
+    cp -aR /etc/etcd ${BACKUPLOCATION}/etc/
   fi
   #cp -aR /etc/sysconfig/{iptables,docker-*} \
   cp -aR /etc/sysconfig/iptables \

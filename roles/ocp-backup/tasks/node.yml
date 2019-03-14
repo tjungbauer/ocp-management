@@ -9,13 +9,13 @@
 - name: "Create archive for OpenShift nodes"
   archive:
     path: '{{ today_dest_path }}/nodebackup-{{ansible_date_time.year}}{{ansible_date_time.month}}{{ansible_date_time.day}}'
-    dest: '{{ today_dest_path }}/nodebackup-{{ansible_date_time.date}}.gz'
+    dest: '{{ today_dest_path }}/nodebackup-{{ansible_date_time.date}}.tgz'
     format: gz
 
 # check if the zip archive has been created
-- name: "Check if {{ today_dest_path }}/nodebackup-{{ansible_date_time.date}}.gz has been created"
+- name: "Check if {{ today_dest_path }}/nodebackup-{{ansible_date_time.date}}.tgz has been created"
   stat:
-    path: "{{ today_dest_path }}/nodebackup-{{ansible_date_time.date}}.gz"
+    path: "{{ today_dest_path }}/nodebackup-{{ansible_date_time.date}}.tgz"
   register: node_archive_ok
 
 # remove unzipped folder if archive has been created
